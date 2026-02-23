@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Detainee - BJMP Visitation System</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/officer.png" alt="Logo" class="logo">
+                <h2>Officer Panel</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link"><span>📊</span> Dashboard</a>
+                <a href="add-visitor.html" class="nav-link"><span>➕</span> Log Visitor</a>
+                <a href="visitor-list.html" class="nav-link"><span>📋</span> Visitors Log</a>
+                <a href="search-detainee.html" class="nav-link active"><span>🔍</span> Search Detainee</a>
+                <a href="today-visitors.html" class="nav-link"><span>📅</span> Today's Visitors</a>
+            </nav>
+            <div class="logout-form">
+                <a href="logout.php" class="nav-link logout-btn"><span>🚪</span> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>Search Detainee</h1>
+            </header>
+
+            <div class="content-card">
+                <div class="form-group">
+                    <input type="text" id="detaineeSearch" placeholder="Enter detainee name or number..." style="padding: 15px; font-size: 16px;">
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Search Results</h2>
+                <table class="data-table" id="detaineeTable">
+                    <thead>
+                        <tr>
+                            <th>Detainee No.</th>
+                            <th>Name</th>
+                            <th>Date of Birth</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5" class="no-data">Enter a search term above</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="search-detainee-script.js"></script>
+</body>
+</html>

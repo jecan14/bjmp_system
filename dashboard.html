@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Officer Dashboard - BJMP Visitation System</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/officer.png" alt="Logo" class="logo">
+                <h2>Officer Panel</h2>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link active">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="add-visitor.html" class="nav-link">
+                    <span>➕</span> Log Visitor
+                </a>
+                <a href="visitor-list.html" class="nav-link">
+                    <span>📋</span> Visitors Log
+                </a>
+                <a href="search-detainee.html" class="nav-link">
+                    <span>🔍</span> Search Detainee
+                </a>
+                <a href="today-visitors.html" class="nav-link">
+                    <span>📅</span> Today's Visitors
+                </a>
+            </nav>
+
+            <div class="logout-form">
+                <a href="logout.php" class="nav-link logout-btn">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1>Welcome, <span id="officerName">Officer</span></h1>
+                <div class="user-info">
+                    <span class="badge badge-officer">OFFICER</span>
+                    <span id="officerEmail">officer@bjmp.gov.ph</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Stats - COLORFUL GRADIENTS -->
+            <div class="stats-grid">
+                <div class="stat-card stat-card-blue">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>Today's Visitors</h3>
+                        <p class="stat-number" id="todayVisitors">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card-purple">
+                    <div class="stat-icon">🔒</div>
+                    <div class="stat-info">
+                        <h3>Active Detainees</h3>
+                        <p class="stat-number" id="activeDetainees">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card-orange">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-info">
+                        <h3>My Logs</h3>
+                        <p class="stat-number" id="myLogs">0</p>
+                    </div>
+                </div>
+
+                <!-- GREEN HIGHLIGHT - Currently Inside -->
+                <div class="stat-card stat-card-green">
+                    <div class="stat-icon">👤</div>
+                    <div class="stat-info">
+                        <h3>Currently Inside</h3>
+                        <p class="stat-number stat-number-green" id="currentlyInside">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="content-card">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <a href="add-visitor.html" class="action-card action-card-blue">
+                        <div class="action-icon">➕</div>
+                        <h3>Log New Visitor</h3>
+                        <p>Register a new visitor entry</p>
+                    </a>
+                    <a href="visitor-list.html" class="action-card action-card-purple">
+                        <div class="action-icon">📋</div>
+                        <h3>View All Logs</h3>
+                        <p>See all visitor records</p>
+                    </a>
+                    <a href="today-visitors.html" class="action-card action-card-green">
+                        <div class="action-icon">📅</div>
+                        <h3>Today's Visitors</h3>
+                        <p>Check today's entries</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Visitor Logs -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Recent Visitor Logs</h2>
+                    <a href="visitor-list.html" class="btn btn-secondary">View All</a>
+                </div>
+                
+                <table class="data-table" id="recentLogsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Visitor Name</th>
+                            <th>Detainee</th>
+                            <th>Time In</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="no-data">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log New Visitor - BJMP Visitation System</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/officer.png" alt="Logo" class="logo">
+                <h2>Officer Panel</h2>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="add-visitor.html" class="nav-link active">
+                    <span>➕</span> Log Visitor
+                </a>
+                <a href="visitor-list.html" class="nav-link">
+                    <span>📋</span> Visitors Log
+                </a>
+                <a href="search-detainee.html" class="nav-link">
+                    <span>🔍</span> Search Detainee
+                </a>
+                <a href="today-visitors.html" class="nav-link">
+                    <span>📅</span> Today's Visitors
+                </a>
+            </nav>
+
+            <div class="logout-form">
+                <a href="logout.php" class="nav-link logout-btn">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Log New Visitor</h1>
+                <a href="visitor-list.html" class="btn btn-secondary">← Back to List</a>
+            </header>
+
+            <div id="alertContainer"></div>
+
+            <div class="content-card">
+                <form id="addVisitorForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visitorName">Visitor's Name <span class="required">*</span></label>
+                            <input type="text" id="visitorName" name="visitor_name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visitorId">ID Number <span class="required">*</span></label>
+                            <input type="text" id="visitorId" name="visitor_id_number" placeholder="Driver's License, National ID, etc.">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visitorContact">Contact Number <span class="required">*</span></label>
+                            <input type="tel" id="visitorContact" name="visitor_contact" required placeholder="09XXXXXXXXX">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="relationship">Relationship to Detainee <span class="required">*</span></label>
+                            <select id="relationship" name="relationship" required>
+                                <option value="">Select Relationship</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Child">Child</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Relative">Relative</option>
+                                <option value="Friend">Friend</option>
+                                <option value="Lawyer">Lawyer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detaineeId">Detainee <span class="required">*</span></label>
+                        <select id="detaineeId" name="detainee_id" required>
+                            <option value="">Select Detainee</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visitDate"> Date <span class="required">*</span></label>
+                            <input type="date" id="visitDate" name="visit_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visitTime"> Time <span class="required">*</span></label>
+                            <input type="time" id="visitTime" name="visit_time" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes / Remarks</label>
+                        <textarea id="notes" name="notes" rows="4" placeholder="Any special notes or items brought..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">✓ Log Visitor</button>
+                        <a href="visitor-list.html" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="add-visitor-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-image: url('images/bjmp.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.form-wrapper {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.logo-container {
+    padding: 30px 30px 15px;
+    text-align: center;
+    background: #1F3C6E; /* Deep Navy Blue */
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.form-container {
+    padding: 25px 35px 30px;
+}
+
+.form-container.hidden {
+    display: none;
+}
+
+.form-container h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.form-container h2 span {
+    color: #7f8c8d;
+}
+
+/* Compact Registration Form */
+.form-compact {
+    padding: 20px 30px 25px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.form-compact h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.form-row-compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group-compact {
+    margin-bottom: 12px;
+}
+
+.form-group label,
+.form-group-compact label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+.form-group input,
+.form-group select,
+.form-group-compact input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group-compact input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.password-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #667eea;
+}
+
+.eye-icon {
+    pointer-events: none;
+}
+
+.password-strength {
+    margin-top: 6px;
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-bar.weak {
+    width: 33%;
+    background: #e74c3c;
+}
+
+.strength-bar.medium {
+    width: 66%;
+    background: #f39c12;
+}
+
+.strength-bar.strong {
+    width: 100%;
+    background: #27ae60;
+}
+
+.strength-text,
+.match-text,
+.attempts-text {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #666;
+}
+
+.strength-text.weak {
+    color: #e74c3c;
+}
+
+.strength-text.medium {
+    color: #f39c12;
+}
+
+.strength-text.strong {
+    color: #27ae60;
+}
+
+.match-text.no-match,
+.attempts-text.warning {
+    color: #e74c3c;
+}
+
+.match-text.match {
+    color: #27ae60;
+}
+
+/* Alerts */
+.alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.alert-error {
+    background: #fee;
+    color: #c33;
+    border: 1px solid #fcc;
+}
+
+.alert-success {
+    background: #efe;
+    color: #3c3;
+    border: 1px solid #cfc;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.btn-primary {
+    background: #2F6FED; /* Emergency Blue */
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+}
+
+.form-footer p {
+    color: #666;
+    font-size: 13px;
+}
+
+.form-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.form-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .form-container {
+        padding: 20px 25px;
+    }
+
+    .form-compact {
+        padding: 18px 22px;
+    }
+
+    .logo-container {
+        padding: 25px 20px 12px;
+    }
+
+    .logo {
+        max-width: 80px;
+    }
+
+    .form-container h2 {
+        font-size: 18px;
+    }
+
+    .form-row-compact {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-container {
+    animation: fadeIn 0.4s ease;
+}
+
+/* Custom scrollbar for compact form */
+.form-compact::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-compact::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.form-compact::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.form-compact::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.stat-card.today-visitors {
+    background: #2F6FED;
+    color: white;
+}
+
+/* Active Detainees - Purple Gradient */
+.stat-card.active-detainees {
+    background: #1F3C6E;
+    color: white;
+}
+
+/* My Logs - Orange Gradient */
+.stat-card.my-logs {
+    background: #F57C00;
+    color: white;
+}
+
+/* Currently Inside - GREEN Gradient (HIGHLIGHTED!) */
+.stat-card.currently-inside {
+    background: #2E7D32;
+    color: white;
+    box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+}
+
+/* Visitor still inside - GREEN highlight */
+.visitor-inside-row {
+    background-color: #d4edda !important;
+    border-left: 4px solid #28a745;
+}
+
+.visitor-inside-row:hover {
+    background-color: #c3e6cb !important;
+}

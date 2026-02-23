@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Details - Jail Visitor System</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <style>
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .detail-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .detail-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-item label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .detail-item p {
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .detail-item small {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="logo">
+                <h2>Officer Panel</h2>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="add-visitor.html" class="nav-link">
+                    <span>➕</span> Log Visitor
+                </a>
+                <a href="visitor-list.html" class="nav-link active">
+                    <span>📋</span> Visitor Logs
+                </a>
+                <a href="search-prisoner.html" class="nav-link">
+                    <span>🔍</span> Search Prisoner
+                </a>
+                <a href="today-visitors.html" class="nav-link">
+                    <span>📅</span> Today's Visitors
+                </a>
+            </nav>
+
+            <div class="logout-form">
+                <a href="login.html" class="nav-link logout-btn">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Visitor Details</h1>
+                <div class="header-actions" style="display: flex; gap: 10px;">
+                    <button id="editBtn" class="btn btn-primary" onclick="editCurrentVisitor()">Edit</button>
+                    <a href="visitor-list.html" class="btn btn-secondary">← Back</a>
+                </div>
+            </header>
+
+            <div class="content-card">
+                <div class="detail-grid" id="visitorDetails">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div id="checkoutSection" class="form-actions" style="margin-top: 30px;">
+                    <!-- Checkout button will appear here if not checked out -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+    <script src="view-visitor-script.js"></script>
+</body>
+</html>

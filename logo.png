@@ -1,0 +1,19 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="58" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+  
+  <!-- Badge/Shield Shape -->
+  <path d="M 60 25 L 75 30 L 75 50 C 75 65 67 75 60 80 C 53 75 45 65 45 50 L 45 30 Z" 
+        fill="white" opacity="0.9"/>
+  
+  <!-- Lock Icon -->
+  <rect x="52" y="55" width="16" height="15" rx="2" fill="#3498db"/>
+  <path d="M 55 55 L 55 48 C 55 44.5 56.8 42 60 42 C 63.2 42 65 44.5 65 48 L 65 55" 
+        fill="none" stroke="#3498db" stroke-width="2.5"/>
+  <circle cx="60" cy="62" r="2" fill="white"/>
+  <line x1="60" y1="64" x2="60" y2="68" stroke="white" stroke-width="1.5"/>
+  
+  <!-- Text -->
+  <text x="60" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+        fill="white" text-anchor="middle">JAIL SYSTEM</text>
+</svg>

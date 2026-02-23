@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BJMP Visitation System - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="logo-container">
+                <img src="images/bjmp-logo.png" alt="BJMP Logo" class="logo">
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-container" id="loginForm">
+                <h2>Visitation Monitoring System for BJMP Urdaneta<br><span style="font-size: 16px; font-weight: 500px;">LOGIN</span></h2>
+                
+                <div id="lockMessage" class="alert alert-error" style="display: none;">
+                    Your account has been temporarily locked due to multiple failed login attempts. Please try again in <span id="lockTimer">30</span> seconds.
+                </div>
+
+                <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
+
+                <form id="loginFormElement" action="login-process.php" method="POST">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" name="username" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="login-password" name="password" required autocomplete="current-password">
+                            <button type="button" class="toggle-password" onclick="togglePassword('login-password')">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="attempts-text" id="attemptsText"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
+                </form>
+
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" onclick="showRegister(); return false;">Create Account</a></p>
+                </div>
+            </div>
+
+            <!-- Registration Form - Smaller Card -->
+            <div class="form-container form-compact hidden" id="registerForm">
+                <h2>Create Account</h2>
+                <form id="registerFormElement" action="register-process.php" method="POST">
+                    <div class="form-row-compact">
+                        <div class="form-group-compact">
+                            <label for="reg-name">Full Name <span class="required">*</span></label>
+                            <input type="text" id="reg-name" name="name" required>
+                        </div>
+
+                        <div class="form-group-compact">
+                            <label for="reg-username">Username <span class="required">*</span></label>
+                            <input type="text" id="reg-username" name="username" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row-compact">
+                        <div class="form-group-compact">
+                            <label for="reg-email">Email <span class="required">*</span></label>
+                            <input type="email" id="reg-email" name="email" required>
+                        </div>
+
+                        <div class="form-group-compact">
+                            <label for="reg-number">Contact Number <span class="required">*</span></label>
+                            <input type="tel" id="reg-number" name="number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-compact">
+                        <label for="reg-password">Password <span class="required">*</span></label>
+                        <div class="password-input">
+                            <input type="password" id="reg-password" name="password" required oninput="checkPasswordStrength(this.value)">
+                            <button type="button" class="toggle-password" onclick="togglePassword('reg-password')">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <p class="strength-text" id="strengthText">Enter password</p>
+                    </div>
+
+                    <div class="form-group-compact">
+                        <label for="reg-confirm-password">Confirm Password <span class="required">*</span></label>
+                        <div class="password-input">
+                            <input type="password" id="reg-confirm-password" name="confirm_password" required oninput="checkPasswordMatch()">
+                            <button type="button" class="toggle-password" onclick="togglePassword('reg-confirm-password')">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="match-text" id="matchText"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin(); return false;">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+</html>
