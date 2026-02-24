@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadTodayVisitors() {
-    fetch('get-visitors.php')
+    const today = new Date().toISOString().split('T')[0];
+    fetch(`get-visitors.php?date=${today}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const today = new Date().toISOString().split('T')[0];
-                const visitors = data.visitors.filter(v => v.visit_date === today);
-                displayTodayVisitors(visitors);
+                // The backend now does the date filtering
+                displayTodayVisitors(data.visitors);
             }
         });
 }

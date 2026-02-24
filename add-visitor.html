@@ -77,11 +77,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="detaineeId">Person Deprived of Liberty <span class="required">*</span></label>
-                        <select id="detaineeId" name="detainee_id" required>
-                            <option value="" disabled selected>Select Individual</option>
-                            <!-- Will be populated by JavaScript -->
-                        </select>
+                        <label for="detaineeName">Person Deprived of Liberty <span class="required">*</span></label>
+                        <input type="text" id="detaineeName" name="detainee_name" required placeholder="Enter Name of Individual Being Visited">
                     </div>
 
                     <div class="form-row">
@@ -103,13 +100,13 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">✓ Log Visitor</button>
-                        <a href="visitor-list.html" class="btn btn-secondary">Cancel</a>
+                        <a href="visitorlist_officer.html" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
         </main>
     </div>
 
-    <script src="add-visitor-script.js"></script>
+    <script src="add-visitor-script.js?v=1.2"></script>
 </body>
 </html>

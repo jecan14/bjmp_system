@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visitors Log - BJMP Visitation System</title>
+    <title>Visitor's Log - BJMP Visitation System</title>
     <link rel="stylesheet" href="dashboard-style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
             <nav class="nav-menu">
                 <a href="dashboard.html" class="nav-link"><span>📊</span> Dashboard</a>
                 <a href="add-visitor.html" class="nav-link"><span>➕</span> Log Visitor</a>
-                <a href="visitor-list.html" class="nav-link active"><span>📋</span> Visitor List</a>
+                <a href="visitorlist_officer.html" class="nav-link active"><span>📋</span> Visitor List</a>
                 
                 
                 
@@ -32,7 +32,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="header">
-                <h1>Visitors Log</h1>
+                <h1>Visitor's Log</h1>
                 <div class="header-actions">
                     <a href="add-visitor.html" class="btn btn-primary">+ Log New Visitor</a>
                 </div>
@@ -46,11 +46,6 @@
                     <input type="text" id="searchInput" placeholder="Search visitor name, contact, ID..." style="flex: 2; min-width: 250px; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
                     
                     <input type="date" id="dateFilter" style="flex: 1; min-width: 150px; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
-                    
-                    <select id="detaineeFilter" style="flex: 1; min-width: 150px; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
-                        <option value="">All Detainees</option>
-                        <!-- Will be populated by JavaScript -->
-                    </select>
                     
                     <button type="button" class="btn btn-primary" onclick="filterVisitors()">🔍 Search</button>
                     <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear</button>
@@ -67,7 +62,7 @@
                             <th>Date</th>
                             <th>Visitor's Name</th>
                             <th>Contact</th>
-                            <th>Detainee</th>
+                            <th>PDL's Name</th>
                             <th>Relationship</th>
                             <th>Check-in</th>
                             <th>Check-out</th>
@@ -84,6 +79,6 @@
         </main>
     </div>
 
-    <script src="visitor-list-script.js"></script>
+    <script src="visitor-list-script.js?v=1.2"></script>
 </body>
 </html>

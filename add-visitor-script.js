@@ -1,26 +1,3 @@
-// Load detainees into dropdown
-function loadDetainees() {
-    fetch('get-detainees.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success && data.detainees) {
-                const select = document.getElementById('detaineeId');
-                select.innerHTML = '<option value="" disabled selected>Select Individual</option>';
-                
-                data.detainees.forEach(detainee => {
-                    const option = document.createElement('option');
-                    option.value = detainee.id;
-                    option.textContent = `${detainee.detainee_number} - ${detainee.first_name} ${detainee.last_name}`;
-                    select.appendChild(option);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error loading detainees:', error);
-            showAlert('Error loading detainees', 'error');
-        });
-}
-
 // Set default date and time
 function setDefaultDateTime() {
     const dateInput = document.getElementById('visitDate');
@@ -80,7 +57,7 @@ function handleSubmit(event) {
             
             // Redirect after 1 second
             setTimeout(() => {
-                window.location.href = 'visitor-list.html';
+                window.location.href = 'visitorlist_officer.html';
             }, 1000);
         } else {
             showAlert(data.message || 'Error logging visitor', 'error');
@@ -98,7 +75,6 @@ function handleSubmit(event) {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-    loadDetainees();
     setDefaultDateTime();
     
     const form = document.getElementById('addVisitorForm');

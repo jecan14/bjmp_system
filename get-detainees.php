@@ -7,7 +7,7 @@ if (!is_logged_in()) {
     exit;
 }
 
-$sql = "SELECT * FROM detainees WHERE status = 'active' ORDER BY last_name ASC";
+$sql = "SELECT * FROM detainees ORDER BY last_name ASC";
 $result = $conn->query($sql);
 $detainees = [];
 

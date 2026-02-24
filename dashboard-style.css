@@ -177,6 +177,16 @@ body {
     animation: pulse 2s infinite;
 }
 
+.badge-warning {
+    background: #F57C00; /* Orange */
+    color: white;
+}
+
+.badge-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }

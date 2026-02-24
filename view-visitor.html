@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visitor Details - Jail Visitor System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Visitor Details - BJMP Visitation System</title>
     <link rel="stylesheet" href="dashboard-style.css">
     <style>
         .detail-grid {
@@ -54,7 +54,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="logo">
+                <img src="images/officer.png" alt="Logo" class="logo">
                 <h2>Officer Panel</h2>
             </div>
             
@@ -65,14 +65,8 @@
                 <a href="add-visitor.html" class="nav-link">
                     <span>➕</span> Log Visitor
                 </a>
-                <a href="visitor-list.html" class="nav-link active">
+                <a href="visitorlist_officer.html" class="nav-link active">
                     <span>📋</span> Visitor Logs
-                </a>
-                <a href="search-prisoner.html" class="nav-link">
-                    <span>🔍</span> Search Prisoner
-                </a>
-                <a href="today-visitors.html" class="nav-link">
-                    <span>📅</span> Today's Visitors
                 </a>
             </nav>
 
@@ -88,8 +82,7 @@
             <header class="header">
                 <h1>Visitor Details</h1>
                 <div class="header-actions" style="display: flex; gap: 10px;">
-                    <button id="editBtn" class="btn btn-primary" onclick="editCurrentVisitor()">Edit</button>
-                    <a href="visitor-list.html" class="btn btn-secondary">← Back</a>
+                    <a href="visitorlist_officer.html" class="btn btn-secondary">← Back</a>
                 </div>
             </header>
 
@@ -104,8 +97,8 @@
             </div>
         </main>
     </div>
-
-    <script src="dashboard-script.js"></script>
+    <!-- dashboard-script.js is not directly needed here, it's for the dashboard page -->
+    <!-- <script src="dashboard-script.js"></script> -->
     <script src="view-visitor-script.js"></script>
 </body>
 </html>

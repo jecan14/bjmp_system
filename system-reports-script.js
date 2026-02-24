@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Load reports on page load
     loadReports();
 });
 
@@ -27,17 +28,43 @@ function loadReports() {
                     visitorBody.innerHTML = '<tr><td colspan="6" class="no-data">No records found</td></tr>';
                 }
 
-                // Populate Activity Logs
-                const logBody = document.querySelector('#activityLogTable tbody');
+                // Populate Activity Logs (Summarized View)
+                const logTable = document.querySelector('#activityLogTable');
+                const logBody = logTable.querySelector('tbody');
+
                 logBody.innerHTML = '';
                 if (data.logs.length > 0) {
+                    // Group logs by action to create summary
+                    const summary = {};
+                    
                     data.logs.forEach(l => {
+                        if (!summary[l.action]) {
+                            summary[l.action] = {
+                                count: 0,
+                                lastTime: l.created_at,
+                                lastUser: l.username || 'System'
+                            };
+                        }
+                        summary[l.action].count++;
+                        
+                        // Track the latest occurrence
+                        if (l.created_at > summary[l.action].lastTime) {
+                            summary[l.action].lastTime = l.created_at;
+                            summary[l.action].lastUser = l.username || 'System';
+                        }
+                    });
+
+                    // Render summary rows
+                    Object.keys(summary).forEach(action => {
+                        const item = summary[action];
                         const row = document.createElement('tr');
+                        const actionLabel = action.replace(/_/g, ' ').toUpperCase();
+                        
                         row.innerHTML = `
-                            <td>${l.created_at}</td>
-                            <td>${l.username || 'System'}</td>
-                            <td>${l.action}</td>
-                            <td>${l.description}</td>
+                            <td><span class="badge badge-secondary">${actionLabel}</span></td>
+                            <td style="font-weight: bold; font-size: 1.1em;">${item.count}</td>
+                            <td>${item.lastTime}</td>
+                            <td>${item.lastUser}</td>
                         `;
                         logBody.appendChild(row);
                     });
