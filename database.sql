@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS system_logs (
 
 -- Default Admin Account (Password: password123)
 INSERT INTO users (username, password, name, email, contact_number, role) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+VALUES ('admin', '$2y$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa', 
         'System Administrator', 'admin@bjmp.gov.ph', '09123456789', 'admin');
