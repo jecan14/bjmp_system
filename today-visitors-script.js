@@ -27,24 +27,28 @@ function displayTodayVisitors(visitors) {
     }
 
     visitors.forEach(v => {
-        if (!v.checkout_time) insideCount++;
+        const isInside = !v.checkout_time || v.checkout_time === '00:00:00' || v.checkout_time === '';
+        if (isInside) insideCount++;
         
         const row = document.createElement('tr');
-        if (!v.checkout_time) row.classList.add('visitor-inside-row');
+        if (isInside) row.classList.add('visitor-inside-row');
 
         row.innerHTML = `
             <td>${formatTime(v.visit_time)}</td>
             <td><strong>${v.visitor_name}</strong></td>
             <td>${v.detainee_name}</td>
-            <td>${v.checkout_time ? '<span class="badge badge-success">Checked Out</span>' : '<span class="badge badge-inside">Inside</span>'}</td>
+            <td>${!isInside ? '<span class="badge badge-success">Checked Out</span>' : '<span class="badge badge-inside">Inside</span>'}</td>
             <td>
-                ${!v.checkout_time ? `<button class="btn btn-success btn-small" onclick="checkoutVisitor(${v.id})">Check Out</button>` : ''}
+                ${isInside ? `<button class="btn btn-success btn-small" onclick="checkoutVisitor(${v.id})">Check Out</button>` : ''}
             </td>
         `;
         tbody.appendChild(row);
     });
 
-    document.getElementById('insideCount').textContent = insideCount;
+    const insideCountElement = document.getElementById('insideCount');
+    if (insideCountElement) {
+        insideCountElement.textContent = insideCount;
+    }
 }
 
 function formatTime(timeString) {

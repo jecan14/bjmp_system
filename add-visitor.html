@@ -57,7 +57,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="visitorContact">Contact Number <span class="required">*</span></label>
-                            <input type="tel" id="visitorContact" name="visitor_contact" required placeholder="09XXXXXXXXX">
+                            <input type="tel" id="visitorContact" name="visitor_contact" required placeholder="">
                         </div>
 
                         <div class="form-group">
@@ -65,20 +65,20 @@
                             <select id="relationship" name="relationship" required>
                                 <option value="">Select Relationship</option>
                                 <option value="Spouse">Spouse</option>
-                                <option value="Parent">Parent</option>
+                                <option value="Parent">Mother</option>
+                                <option value="Parent">Father</option>
                                 <option value="Child">Child</option>
                                 <option value="Sibling">Sibling</option>
                                 <option value="Relative">Relative</option>
                                 <option value="Friend">Friend</option>
-                                <option value="Lawyer">Lawyer</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="detaineeName">Person Deprived of Liberty <span class="required">*</span></label>
-                        <input type="text" id="detaineeName" name="detainee_name" required placeholder="Enter Name of Individual Being Visited">
+                        <label for="detaineeName">Name of PDL to visit<span class="required">*</span></label>
+                        <input type="text" id="detaineeName" name="detainee_name" required placeholder="">
                     </div>
 
                     <div class="form-row">
@@ -95,7 +95,7 @@
 
                     <div class="form-group">
                         <label for="notes">Notes / Remarks</label>
-                        <textarea id="notes" name="notes" rows="4" placeholder="Any special notes or items brought..."></textarea>
+                        <textarea id="notes" name="notes" rows="4" placeholder=""></textarea>
                     </div>
 
                     <div class="form-actions">
@@ -108,5 +108,57 @@
     </div>
 
     <script src="add-visitor-script.js?v=1.2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('visitDate');
+            const timeInput = document.getElementById('visitTime');
+
+            if (!dateInput || !timeInput) return;
+
+            function updateTimeConstraints() {
+                const now = new Date();
+                
+                // Format Date: YYYY-MM-DD
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const today = `${year}-${month}-${day}`;
+
+                // Format Time: HH:MM
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const currentTime = `${hours}:${minutes}`;
+
+                // Set min date to today
+                dateInput.min = today;
+                if (!dateInput.value) dateInput.value = today;
+
+                // If selected date is today, restrict time
+                if (dateInput.value === today) {
+                    timeInput.min = currentTime;
+                    // If current value is empty or less than min, update it
+                    if (!timeInput.value || timeInput.value < currentTime) {
+                        timeInput.value = currentTime;
+                    }
+                } else {
+                    timeInput.removeAttribute('min');
+                }
+            }
+
+            // Initialize and add listeners
+            updateTimeConstraints();
+            dateInput.addEventListener('change', updateTimeConstraints);
+            
+            // Update every minute to keep 'now' accurate
+            setInterval(updateTimeConstraints, 60000);
+            
+            // Ensure validity on input
+            timeInput.addEventListener('input', function() {
+                if (this.min && this.value < this.min) {
+                    this.value = this.min;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

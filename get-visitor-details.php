@@ -22,7 +22,7 @@ $sql = "SELECT v.*, d.first_name as detainee_first_name, d.last_name as detainee
         FROM visitors v
         LEFT JOIN detainees d ON v.detainee_id = d.id
         LEFT JOIN users u ON v.logged_by = u.id
-        WHERE v.id = ? AND v.logged_by = ?"; // Ensure officer can only view their own logs
+        WHERE v.id = ?"; 
 
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
@@ -30,7 +30,7 @@ if ($stmt === false) {
     exit;
 }
 
-$stmt->bind_param("ii", $visitor_id, $user_id);
+$stmt->bind_param("i", $visitor_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $visitor = $result->fetch_assoc();

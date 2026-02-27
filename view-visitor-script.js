@@ -17,17 +17,12 @@ function showAlert(message, type = 'success') {
     }, 5000);
 }
 
-// Function to get URL parameter
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
 // Function to fetch and display visitor details
 async function fetchVisitorDetails() {
-    const visitorId = getUrlParameter('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const visitorId = urlParams.get('id');
+    const source = urlParams.get('source');
+
     const visitorDetailsDiv = document.getElementById('visitorDetails');
     const checkoutSection = document.getElementById('checkoutSection');
 
@@ -93,8 +88,8 @@ async function fetchVisitorDetails() {
                 ${visitor.notes ? `<div class="detail-item full-width"><label>Notes / Remarks</label><p>${visitor.notes}</p></div>` : ''}
             `;
 
-            // Show checkout button if not checked out
-            if (!isCheckedOut) {
+            // Show checkout button if not checked out and not an admin viewing
+            if (!isCheckedOut && source !== 'admin') {
                 checkoutSection.innerHTML = `
                     <button type="button" class="btn btn-primary" id="checkoutBtn">🚪 Check Out Visitor</button>
                 `;
@@ -104,7 +99,7 @@ async function fetchVisitorDetails() {
                     }
                 });
             } else {
-                checkoutSection.innerHTML = ''; // Clear checkout button if already checked out
+                checkoutSection.innerHTML = ''; // Clear checkout button if already checked out or if admin
             }
 
         } else {
