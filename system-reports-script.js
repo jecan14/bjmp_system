@@ -1,77 +1,67 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Load reports on page load
-    loadReports();
+    loadVisitorReport();
+    loadActivityLogs();
 });
 
-function loadReports() {
-    fetch('get-reports.php')
+function loadVisitorReport() {
+    const tableBody = document.querySelector('#visitorReportTable tbody');
+    tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Loading...</td></tr>';
+
+    fetch('get-visitors.php') // This endpoint should fetch all visitors with joins
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                // Populate Visitor Logs
-                const visitorBody = document.querySelector('#visitorReportTable tbody');
-                visitorBody.innerHTML = '';
-                if (data.visitors.length > 0) {
-                    data.visitors.forEach(v => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${v.visit_date}</td>
-                            <td>${v.visitor_name}</td>
-                            <td>${v.first_name} ${v.last_name}</td>
-                            <td>${v.officer_name || 'Unknown'}</td>
-                            <td>${v.visit_time}</td>
-                            <td>${v.checkout_time || '<span style="color:green">Inside</span>'}</td>
-                        `;
-                        visitorBody.appendChild(row);
-                    });
-                } else {
-                    visitorBody.innerHTML = '<tr><td colspan="6" class="no-data">No records found</td></tr>';
-                }
-
-                // Populate Activity Logs (Summarized View)
-                const logTable = document.querySelector('#activityLogTable');
-                const logBody = logTable.querySelector('tbody');
-
-                logBody.innerHTML = '';
-                if (data.logs.length > 0) {
-                    // Group logs by action to create summary
-                    const summary = {};
+            if (data.success && data.visitors.length > 0) {
+                tableBody.innerHTML = '';
+                data.visitors.slice(0, 15).forEach(v => { // Show latest 15 for this report
+                    const row = tableBody.insertRow();
+                    const timeIn = (v.visit_time && v.visit_time !== '00:00:00') ? new Date(`1970-01-01T${v.visit_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                    const timeOut = (v.checkout_time && v.checkout_time !== '00:00:00') 
+                        ? new Date(`1970-01-01T${v.checkout_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) 
+                        : 'N/A';
                     
-                    data.logs.forEach(l => {
-                        if (!summary[l.action]) {
-                            summary[l.action] = {
-                                count: 0,
-                                lastTime: l.created_at,
-                                lastUser: l.username || 'System'
-                            };
-                        }
-                        summary[l.action].count++;
-                        
-                        // Track the latest occurrence
-                        if (l.created_at > summary[l.action].lastTime) {
-                            summary[l.action].lastTime = l.created_at;
-                            summary[l.action].lastUser = l.username || 'System';
-                        }
-                    });
-
-                    // Render summary rows
-                    Object.keys(summary).forEach(action => {
-                        const item = summary[action];
-                        const row = document.createElement('tr');
-                        const actionLabel = action.replace(/_/g, ' ').toUpperCase();
-                        
-                        row.innerHTML = `
-                            <td><span class="badge badge-secondary">${actionLabel}</span></td>
-                            <td style="font-weight: bold; font-size: 1.1em;">${item.count}</td>
-                            <td>${item.lastTime}</td>
-                            <td>${item.lastUser}</td>
-                        `;
-                        logBody.appendChild(row);
-                    });
-                } else {
-                    logBody.innerHTML = '<tr><td colspan="4" class="no-data">No logs found</td></tr>';
-                }
+                    row.innerHTML = `
+                        <td>${new Date(v.visit_date).toLocaleDateString()}</td>
+                        <td>${v.visitor_name || 'N/A'}</td>
+                        <td>${v.detainee_first_name || ''} ${v.detainee_last_name || ''}</td>
+                        <td>${v.officer_name || 'N/A'}</td>
+                        <td>${timeIn}</td>
+                        <td>${timeOut}</td>
+                    `;
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">No visitor logs found.</td></tr>';
             }
         })
-        .catch(error => console.error('Error loading reports:', error));
+        .catch(error => {
+            console.error('Error loading visitor report:', error);
+            tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Error loading data.</td></tr>';
+        });
+}
+
+function loadActivityLogs() {
+    const tableBody = document.querySelector('#activityLogTable tbody');
+    tableBody.innerHTML = '<tr><td colspan="4" class="no-data">Loading...</td></tr>';
+
+    fetch('get-system-logs.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.logs.length > 0) {
+                tableBody.innerHTML = '';
+                data.logs.forEach(log => {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${log.action}</td>
+                        <td>${log.total_count}</td>
+                        <td>${new Date(log.last_occurred).toLocaleString()}</td>
+                        <td>${log.latest_user || 'System'}</td>
+                    `;
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="4" class="no-data">No system activity logs found.</td></tr>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading activity logs:', error);
+            tableBody.innerHTML = '<tr><td colspan="4" class="no-data">Error loading data.</td></tr>';
+        });
 }

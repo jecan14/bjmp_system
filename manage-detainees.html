@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Detainees - BJMP Admin</title>
     <link rel="stylesheet" href="dashboard-style.css">
+    <script>
+        function verifySession() {
+            // Use 'no-cache' to ensure we get a fresh response from the server.
+            fetch('session-check.php', { cache: 'no-cache' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        // Use replace() to prevent the login page from being in the browser's history.
+                        window.location.replace('login.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Session check failed, redirecting to login.', error);
+                    window.location.replace('login.html');
+                });
+        }
+        // The 'pageshow' event fires on initial load and when a page is restored from the back-forward cache.
+        window.addEventListener('pageshow', verifySession);
+    </script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -29,50 +48,56 @@
         <main class="main-content">
             <header class="header">
                 <h1>Manage Individuals</h1>
+                <div class="header-actions">
+                    <button id="addDetaineeBtn" class="btn btn-primary">+ Add New Individual</button>
+                </div>
             </header>
 
             <div id="alertContainer"></div>
 
-            <!-- Add Detainee Form -->
-            <div class="content-card">
-                <h2>Add New Individual</h2>
-                <form id="addDetaineeForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>PDL's Number <span class="required">*</span></label>
-                            <input type="text" name="detainee_number" required placeholder="e.g. D-2023-001">
+            <!-- The Modal for Adding Detainees -->
+            <div id="addDetaineeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h2>Add New Individual</h2>
+                    <form id="addDetaineeForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>PDL's Number <span class="required">*</span></label>
+                                <input type="text" name="detainee_number" required placeholder="e.g. D-2023-001">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select name="status">
+                                    <option value="active">Active</option>
+                                    <option value="transferred">Transferred</option>
+                                    <option value="released">Released</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select name="status">
-                                <option value="active">Active</option>
-                                <option value="transferred">Transferred</option>
-                                <option value="released">Released</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name <span class="required">*</span></label>
+                                <input type="text" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name <span class="required">*</span></label>
+                                <input type="text" name="last_name" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name <span class="required">*</span></label>
-                            <input type="text" name="first_name" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Middle Name</label>
+                                <input type="text" name="middle_name">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth <span class="required">*</span></label>
+                                <input type="date" name="date_of_birth" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Last Name <span class="required">*</span></label>
-                            <input type="text" name="last_name" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Middle Name</label>
-                            <input type="text" name="middle_name">
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth <span class="required">*</span></label>
-                            <input type="date" name="date_of_birth" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Information</button>
-                </form>
+                        <button type="submit" class="btn btn-primary">Save Information</button>
+                    </form>
+                </div>
             </div>
 
             <!-- Detainee List -->
@@ -92,6 +117,42 @@
             </div>
         </main>
     </div>
+
     <script src="manage-detainees-script.js?v=1.0"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the modal
+            const modal = document.getElementById("addDetaineeModal");
+            if (!modal) return;
+
+            // Get the button that opens the modal
+            const btn = document.getElementById("addDetaineeBtn");
+
+            // Get the <span> element that closes the modal
+            const span = document.querySelector("#addDetaineeModal .close-button");
+
+            // When the user clicks the button, open the modal 
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    modal.classList.add('is-visible');
+                });
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            if (span) {
+                span.addEventListener('click', function() {
+                    modal.classList.remove('is-visible');
+                });
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            modal.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.classList.remove('is-visible');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

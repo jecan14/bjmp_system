@@ -50,12 +50,12 @@ async function fetchVisitors() {
 
                 const detaineeFullName = `${visitor.detainee_first_name} ${visitor.detainee_last_name}`;
                 const checkinTime = new Date(`2000-01-01T${visitor.visit_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const checkoutTime = isCheckedOut ? new Date(`2000-01-01T${visitor.checkout_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '<span class="badge badge-warning">Still Inside</span>';
+                const checkoutTime = isCheckedOut ? new Date(`2000-01-01T${visitor.checkout_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '<span class="badge badge-inside">Active</span>';
 
                 // Conditionally build action buttons based on the page
                 let actionButtonsHTML = `<button class="btn-icon view-btn" data-id="${visitor.id}" title="View Details">👁️</button>`;
                 if (!isAdminPage && !isCheckedOut) {
-                    actionButtonsHTML += ` <button class="btn-icon checkout-btn" data-id="${visitor.id}" title="Check Out">🚪</button>`;
+                    actionButtonsHTML += ` <button class="btn-icon checkout-btn" data-id="${visitor.id}" title="Check Out"><img src="images/checkout.jpg" alt="Check Out" style="width: 20px; height: 20px; vertical-align: middle;"></button>`;
                 }
 
                 row.innerHTML = `

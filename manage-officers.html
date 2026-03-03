@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Officers - BJMP Admin</title>
     <link rel="stylesheet" href="dashboard-style.css">
+    <script>
+        function verifySession() {
+            // Use 'no-cache' to ensure we get a fresh response from the server.
+            fetch('session-check.php', { cache: 'no-cache' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        // Use replace() to prevent the login page from being in the browser's history.
+                        window.location.replace('login.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Session check failed, redirecting to login.', error);
+                    window.location.replace('login.html');
+                });
+        }
+        // The 'pageshow' event fires on initial load and when a page is restored from the back-forward cache.
+        window.addEventListener('pageshow', verifySession);
+    </script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -29,40 +48,61 @@
         <main class="main-content">
             <header class="header">
                 <h1>Manage Officers</h1>
+                <div class="header-actions">
+                    <button id="addOfficerBtn" class="btn btn-primary">+ Add New Officer</button>
+                </div>
             </header>
 
-            <!-- Add Officer Form -->
-            <div class="content-card">
-                <h2>Add New Officer</h2>
-                <form id="addOfficerForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Full Name <span class="required">*</span></label>
-                            <input type="text" name="name" required>
+            <!-- The Modal -->
+            <div id="addOfficerModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h2>Add New Officer</h2>
+                    <form id="addOfficerForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name <span class="required">*</span></label>
+                                <input type="text" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Username <span class="required">*</span></label>
+                                <input type="text" name="username" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Username <span class="required">*</span></label>
-                            <input type="text" name="username" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email <span class="required">*</span></label>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Number <span class="required">*</span></label>
+                                <input type="text" name="contact_number" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Email <span class="required">*</span></label>
-                            <input type="email" name="email" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password <span class="required">*</span></label>
+                                <div class="password-wrapper">
+                                    <input type="password" name="password" id="newOfficerPassword" required onkeyup="checkPasswordStrength(this.value)">
+                                    <span class="toggle-password" onclick="togglePassword('newOfficerPassword')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                                </div>
+                                <div class="strength-meter">
+                                    <div id="strengthBar" class="strength-bar"></div>
+                                    <span id="strengthText" class="strength-text"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password <span class="required">*</span></label>
+                                <div class="password-wrapper">
+                                    <input type="password" name="confirm_password" id="confirmOfficerPassword" required onkeyup="checkPasswordMatch()">
+                                    <span class="toggle-password" onclick="togglePassword('confirmOfficerPassword')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                                </div>
+                                <span id="matchText" class="match-text"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Contact Number <span class="required">*</span></label>
-                            <input type="text" name="contact_number" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Password <span class="required">*</span></label>
-                            <input type="password" name="password" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Officer Account</button>
-                </form>
+                        <button type="submit" class="btn btn-primary">Create Officer Account</button>
+                    </form>
+                </div>
             </div>
 
             <!-- Officer List -->
@@ -75,16 +115,64 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Contact</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan="5" class="no-data">Loading...</td></tr>
+                        <tr><td colspan="6" class="no-data">Loading...</td></tr>
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
-    <script src="manage-officers-script.js"></script>
+
+    <script src="manage-officers-script.js?v=1.2"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the modal
+            const modal = document.getElementById("addOfficerModal");
+            if (!modal) return;
+
+            // Get the button that opens the modal
+            const btn = document.getElementById("addOfficerBtn");
+
+            // Get the <span> element that closes the modal
+            const span = document.querySelector("#addOfficerModal .close-button");
+
+            // When the user clicks the button, open the modal 
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    // Reset form and strength meter before showing
+                    const form = document.getElementById('addOfficerForm');
+                    if (form) form.reset();
+                    
+                    const strengthBar = document.getElementById('strengthBar');
+                    if (strengthBar) strengthBar.className = 'strength-bar';
+                    const strengthText = document.getElementById('strengthText');
+                    if (strengthText) strengthText.textContent = '';
+                    const matchText = document.getElementById('matchText');
+                    if (matchText) matchText.textContent = '';
+
+                    modal.classList.add('is-visible');
+                });
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            if (span) {
+                span.addEventListener('click', function() {
+                    modal.classList.remove('is-visible');
+                });
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            modal.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.classList.remove('is-visible');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

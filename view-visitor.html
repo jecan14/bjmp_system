@@ -5,47 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Visitor Details - BJMP Visitation System</title>
     <link rel="stylesheet" href="dashboard-style.css">
+    <script>
+        function verifySession() {
+            // Use 'no-cache' to ensure we get a fresh response from the server.
+            fetch('session-check.php', { cache: 'no-cache' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        // Use replace() to prevent the login page from being in the browser's history.
+                        window.location.replace('login.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Session check failed, redirecting to login.', error);
+                    window.location.replace('login.html');
+                });
+        }
+        // The 'pageshow' event fires on initial load and when a page is restored from the back-forward cache.
+        window.addEventListener('pageshow', verifySession);
+    </script>
     <style>
+        /* New styles for receipt-like view */
+        .receipt-card {
+            max-width: 480px;
+            margin: 20px auto; /* Center the card */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
         .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-top: 20px;
+            grid-template-columns: 1fr; /* Single column layout */
+            gap: 15px; /* Reduced gap */
+            margin-top: 10px;
         }
 
         .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .detail-item.full-width {
-            grid-column: 1 / -1;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
         }
 
         .detail-item label {
             display: block;
-            font-size: 12px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 0;
             text-transform: uppercase;
             font-weight: 600;
         }
 
         .detail-item p {
-            font-size: 16px;
+            font-size: 14px;
             color: #2c3e50;
             margin: 0;
+            text-align: right;
+        }
+
+        .detail-item.full-width p {
+            text-align: left;
         }
 
         .detail-item small {
             color: #666;
             font-size: 13px;
-        }
-
-        @media (max-width: 768px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -66,15 +96,13 @@
                     <span>➕</span> Log Visitor
                 </a>
                 <a href="visitorlist_officer.html" class="nav-link active">
-                    <span>📋</span> Visitor Logs
+                    <span>📋</span> Manage Visitors
                 </a>
             </nav>
 
-            <div class="logout-form">
-                <a href="login.html" class="nav-link logout-btn">
-                    <span>🚪</span> Logout
-                </a>
-            </div>
+            <form action="logout.php" method="POST" class="logout-form">
+                <button type="submit" class="logout-btn"><span>🚪</span> Logout</button>
+            </form>
         </aside>
 
         <!-- Main Content -->
@@ -86,7 +114,7 @@
                 </div>
             </header>
 
-            <div class="content-card">
+            <div class="content-card receipt-card">
                 <div class="detail-grid" id="visitorDetails">
                     <!-- Will be populated by JavaScript -->
                 </div>
@@ -99,7 +127,8 @@
     </div>
     <!-- dashboard-script.js is not directly needed here, it's for the dashboard page -->
     <!-- <script src="dashboard-script.js"></script> -->
-    <script src="view-visitor-script.js?v=1.5"></script>
+    <script src="view-visitor-script.js?v=1.6"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);

@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitor's Log - BJMP Visitation System</title>
     <link rel="stylesheet" href="dashboard-style.css">
+    <script>
+        function verifySession() {
+            // Use 'no-cache' to ensure we get a fresh response from the server.
+            fetch('session-check.php', { cache: 'no-cache' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        // Use replace() to prevent the login page from being in the browser's history.
+                        window.location.replace('login.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Session check failed, redirecting to login.', error);
+                    window.location.replace('login.html');
+                });
+        }
+        // The 'pageshow' event fires on initial load and when a page is restored from the back-forward cache.
+        window.addEventListener('pageshow', verifySession);
+    </script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -79,6 +98,6 @@
         </main>
     </div>
 
-    <script src="visitor-list-script.js?v=1.2"></script>
+    <script src="visitor-list-script.js?v=1.5"></script>
 </body>
 </html>

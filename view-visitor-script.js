@@ -34,6 +34,9 @@ async function fetchVisitorDetails() {
 
     visitorDetailsDiv.innerHTML = '<p>Loading visitor details...</p>';
 
+    // Added for debugging. Check your browser's console (F12) to see this message.
+    console.log('Running view-visitor-script.js version 1.6');
+
     try {
         const response = await fetch(`get-visitor-details.php?id=${visitorId}`);
         const data = await response.json();
@@ -42,9 +45,15 @@ async function fetchVisitorDetails() {
             const visitor = data.visitor;
             const detaineeFullName = `${visitor.detainee_first_name} ${visitor.detainee_middle_name ? visitor.detainee_middle_name + ' ' : ''}${visitor.detainee_last_name}`;
             const checkinTime = new Date(`2000-01-01T${visitor.visit_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const isCheckedOut = visitor.checkout_time !== null;
-            const checkoutTime = isCheckedOut ? new Date(`2000-01-01T${visitor.checkout_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '<span class="badge badge-warning">Still Inside</span>';
-            const checkoutStatusBadge = isCheckedOut ? '<span class="badge badge-success">Checked Out</span>' : '<span class="badge badge-warning">Still Inside</span>';
+            const isCheckedOut = visitor.checkout_time && visitor.checkout_time !== '00:00:00' && visitor.checkout_time !== '';
+            
+            let checkoutDisplay;
+            if (isCheckedOut) {
+                const time = new Date(`2000-01-01T${visitor.checkout_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                checkoutDisplay = `${time} <span class="badge badge-success">Checked Out</span>`;
+            } else {
+                checkoutDisplay = `<span class="badge badge-inside">Active</span>`;
+            }
 
             visitorDetailsDiv.innerHTML = `
                 <div class="detail-item">
@@ -78,7 +87,7 @@ async function fetchVisitorDetails() {
                 </div>
                 <div class="detail-item">
                     <label>Check-out Time</label>
-                    <p>${checkoutTime} ${checkoutStatusBadge}</p>
+                    <p>${checkoutDisplay}</p>
                 </div>
                 <div class="detail-item full-width">
                     <label>Logged By</label>
