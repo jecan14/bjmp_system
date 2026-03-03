@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="otp-style.css">
+</head>
+<body>
+    <div class="auth-card">
+        <h2>Verify OTP</h2>
+        <p>Enter the 4-digit code sent to your email.</p>
+        
+        <div id="message" class="alert"></div>
+
+        <form id="otpForm">
+            <input type="hidden" id="email" name="email">
+            
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Verify Code</button>
+        </form>
+    </div>
+
+    <script>
+        // Get email from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        if(email) document.getElementById('email').value = email;
+
+        // Auto-focus logic for OTP boxes
+        const inputs = document.querySelectorAll('.otp-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length > 1) e.target.value = e.target.value.slice(0, 1);
+                if (e.target.value.length === 1) {
+                    if (index < inputs.length - 1) inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value) {
+                    if (index > 0) inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Form Submission
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let otp = '';
+            inputs.forEach(input => otp += input.value);
+
+            if (otp.length !== 4) {
+                alert('Please enter complete 4-digit code');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('email', document.getElementById('email').value);
+            formData.append('otp', otp);
+
+            fetch('verify-otp-process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'reset-password.html';
+                } else {
+                    const msg = document.getElementById('message');
+                    msg.className = 'alert alert-danger';
+                    msg.textContent = data.message;
+                    msg.style.display = 'block';
+                    // Clear inputs on error
+                    inputs.forEach(input => input.value = '');
+                    inputs[0].focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
