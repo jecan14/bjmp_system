@@ -7,7 +7,7 @@ if (!is_logged_in() || !is_admin()) {
     exit;
 }
 
-$sql = "SELECT id, name, username, email, contact_number FROM users WHERE role = 'officer' ORDER BY name ASC";
+$sql = "SELECT id, name, username, email, contact_number, status FROM users WHERE role = 'officer' ORDER BY name ASC";
 $result = $conn->query($sql);
 $officers = [];
 

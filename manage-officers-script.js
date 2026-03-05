@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOfficers();
 
     document.getElementById('addOfficerForm').addEventListener('submit', function(e) {
+    // Initialize password toggle icons to ensure they are visible on load.
+    initializePasswordToggle('newOfficerPassword');
+    initializePasswordToggle('confirmOfficerPassword');
+
         e.preventDefault();
         const formData = new FormData(this);
         const password = formData.get('password');
@@ -21,25 +25,20 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 alert('Officer account created successfully!');
-                // Close the modal on success
-                const matchText = document.getElementById('matchText');
-                if (matchText) {
-                    matchText.textContent = '';
-                    matchText.className = 'match-text';
-                }
-                document.getElementById('addOfficerModal').style.display = 'none';
+                // Close the modal using the 'is-visible' class for consistency
+                document.getElementById('addOfficerModal').classList.remove('is-visible');
                 this.reset();
                 loadOfficers();
             } else {
                 alert(data.message || 'Error creating account');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => alert('An error occurred while adding the officer.'));
     });
 });
 
 function loadOfficers() {
-    fetch('get-officers.php')
+    fetch('get-officers.php', { cache: 'no-cache' })
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector('#officersTable tbody');
@@ -53,7 +52,9 @@ function loadOfficers() {
                     const row = document.createElement('tr');
 
                     // Determine status and badge
-                    const isActive = officer.status === 'active';
+                    // Robust check: convert to string, trim, lowercase. Handles 'Active', 'active', '1', etc.
+                    const statusStr = String(officer.status || '').trim().toLowerCase();
+                    const isActive = statusStr === 'active' || statusStr === '1' || statusStr === 'true';
                     const statusBadge = isActive 
                         ? '<span class="badge badge-success">Active</span>' 
                         : '<span class="badge badge-secondary">Inactive</span>';
@@ -62,7 +63,7 @@ function loadOfficers() {
                     const toggleBtnText = isActive ? 'Deactivate' : 'Activate';
                     const toggleBtnClass = isActive ? 'btn-warning' : 'btn-success';
                     const toggleBtnIcon = isActive ? '⏸️' : '▶️';
-                    const currentStatus = officer.status || 'inactive';
+                    const currentStatusForToggle = isActive ? 'active' : 'inactive';
 
                     row.innerHTML = `
                         <td>${officer.name}</td>
@@ -72,7 +73,7 @@ function loadOfficers() {
                         <td>${statusBadge}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-small ${toggleBtnClass}" onclick="toggleOfficerStatus(${officer.id}, '${currentStatus}')" title="${toggleBtnText}">
+                                <button class="btn btn-small ${toggleBtnClass}" onclick="toggleOfficerStatus(${officer.id}, '${currentStatusForToggle}')" title="${toggleBtnText}">
                                     ${toggleBtnIcon}
                                 </button>
                                 <button class="btn-icon" onclick="deleteOfficer(${officer.id})" style="color:red;" title="Delete">🗑️</button>
@@ -84,6 +85,11 @@ function loadOfficers() {
             } else {
                 tbody.innerHTML = '<tr><td colspan="6" class="no-data">No officers found.</td></tr>';
             }
+        })
+        .catch(error => {
+            console.error('Error loading officers:', error);
+            const tbody = document.querySelector('#officersTable tbody');
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data">Error loading data. Please check connection.</td></tr>';
         });
 }
 
@@ -103,10 +109,15 @@ function toggleOfficerStatus(id, currentStatus) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                alert('Status updated successfully!'); // Give feedback
                 loadOfficers(); // Refresh the list to show the new status
             } else {
                 alert(data.message || `Error: Could not ${action} officer.`);
             }
+        })
+        .catch(error => {
+            console.error('Error updating status:', error);
+            alert(`An error occurred. Could not ${action} officer.`);
         });
     }
 }
@@ -130,6 +141,21 @@ function togglePassword(inputId) {
     }
 }
 
+/**
+ * Initializes the password toggle icon to be visible when the page loads.
+ * This prevents the icon from being invisible until the first click.
+ * @param {string} inputId The ID of the password input field.
+ */
+function initializePasswordToggle(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    
+    const icon = input.nextElementSibling;
+    if (icon && icon.innerHTML.trim() === '') {
+        const eyeIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        icon.innerHTML = eyeIcon;
+    }
+}
 /**
  * Checks the strength of a password and updates the UI.
  * @param {string} password The password string to check.
@@ -186,7 +212,7 @@ function checkPasswordMatch() {
         matchText.className = 'match-text no-match';
     } else {
         matchText.textContent = 'Passwords match';
-        matchText.className = 'match-text'; // Reset to default color
+        matchText.className = 'match-text match'; // Use 'match' class for success color
     }
 }
 

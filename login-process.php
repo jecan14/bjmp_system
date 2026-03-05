@@ -20,7 +20,7 @@ if (empty($username) || empty($password)) {
 }
 
 // Prepare statement to get user
-$stmt = $conn->prepare("SELECT id, username, password, name, email, role, failed_attempts, locked_until FROM users WHERE username = ? AND status = 'active'");
+$stmt = $conn->prepare("SELECT id, username, password, name, email, role, failed_attempts, locked_until, status FROM users WHERE username = ?");
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -33,6 +33,12 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 $stmt->close();
+
+// Check if account is active
+if (strtolower($user['status']) !== 'active') {
+    echo json_encode(['success' => false, 'message' => 'Your account is deactivated. Please contact the administrator.']);
+    exit;
+}
 
 // Check if account is locked
 if ($user['locked_until'] && strtotime($user['locked_until']) > time()) {
