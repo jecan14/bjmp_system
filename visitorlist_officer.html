@@ -26,6 +26,8 @@
     </script>
 </head>
 <body>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -35,16 +37,13 @@
             </div>
             
             <nav class="nav-menu">
-                <a href="dashboard.html" class="nav-link"><span>📊</span> Dashboard</a>
-                <a href="add-visitor.html" class="nav-link"><span>➕</span> Log Visitor</a>
-                <a href="visitorlist_officer.html" class="nav-link active"><span>📋</span>Manage Visitors</a>
-                
-                
-                
+                <a href="dashboard.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.738 0A3.5 3.5 0 0114.5 16h-9z"></path><path fill-rule="evenodd" d="M5 16.5a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5z" clip-rule="evenodd"></path></svg> Dashboard</a>
+                <a href="add-visitor.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path></svg> Log Visitor</a>
+                <a href="visitorlist_officer.html" class="nav-link active"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg> Manage Visitors</a>
             </nav>
 
             <form action="logout.php" method="POST" class="logout-form">
-                <button type="submit" class="logout-btn"><span>🚪</span> Logout</button>
+                <button type="submit" class="logout-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z" clip-rule="evenodd" /></svg> Logout</button>
             </form>
         </aside>
 
@@ -113,5 +112,11 @@
 
     <script src="visitor-list-script.js?v=1.5"></script>
     <script src="logout-modal-script.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadVisitorReport();
     loadActivityLogs();
+
+    document.getElementById('exportPdfBtn').addEventListener('click', exportVisitorLogsToPDF);
 });
 
 function loadVisitorReport() {
@@ -63,5 +65,53 @@ function loadActivityLogs() {
         .catch(error => {
             console.error('Error loading activity logs:', error);
             tableBody.innerHTML = '<tr><td colspan="4" class="no-data">Error loading data.</td></tr>';
+        });
+}
+
+function exportVisitorLogsToPDF() {
+    // Fetch all visitor data for the report
+    fetch('get-visitors.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.visitors.length > 0) {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const tableColumn = ["Date", "Visitor", "Detainee", "Logged By", "Time In", "Time Out"];
+                const tableRows = [];
+
+                data.visitors.forEach(v => {
+                    const timeIn = (v.visit_time && v.visit_time !== '00:00:00') ? new Date(`1970-01-01T${v.visit_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                    const timeOut = (v.checkout_time && v.checkout_time !== '00:00:00') 
+                        ? new Date(`1970-01-01T${v.checkout_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) 
+                        : 'N/A';
+                    const detaineeName = `${v.detainee_first_name || ''} ${v.detainee_last_name || ''}`.trim();
+
+                    const visitorData = [
+                        new Date(v.visit_date).toLocaleDateString(),
+                        v.visitor_name || 'N/A',
+                        detaineeName || 'N/A',
+                        v.officer_name || 'N/A',
+                        timeIn,
+                        timeOut
+                    ];
+                    tableRows.push(visitorData);
+                });
+
+                doc.text("Recent Visitor Logs", 14, 15);
+                doc.autoTable({
+                    head: [tableColumn],
+                    body: tableRows,
+                    startY: 20,
+                });
+
+                doc.save('visitor_logs_report.pdf');
+            } else {
+                alert('No visitor data available to export.');
+            }
+        })
+        .catch(error => {
+            console.error('Error exporting to PDF:', error);
+            alert('An error occurred while preparing the PDF report.');
         });
 }

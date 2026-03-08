@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - BJMP Admin</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <script>
+        function verifySession() {
+            fetch('session-check.php', { cache: 'no-cache' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in || data.role !== 'admin') {
+                        window.location.replace('login.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Session check failed, redirecting to login.', error);
+                    window.location.replace('login.html');
+                });
+        }
+        window.addEventListener('pageshow', verifySession);
+    </script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/super admin.png" alt="Logo" class="logo">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="admin-dashboard.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.738 0A3.5 3.5 0 0114.5 16h-9z"></path><path fill-rule="evenodd" d="M5 16.5a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5z" clip-rule="evenodd"></path></svg> Dashboard</a>
+                <a href="visitor-list.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg> Manage Visitors</a>
+                <a href="manage-officers.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path></svg> Manage Officers</a>
+                <a href="manage-detainees.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"></path></svg> Manage Individuals</a>
+                <a href="system-reports.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 110 2H3a1 1 0 01-1-1zm5 0a1 1 0 011-1h2a1 1 0 110 2H8a1 1 0 01-1-1zm5 0a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"></path><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm10.293 9.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L11 8.414l1.293 1.293z" clip-rule="evenodd"></path></svg> Reports</a>
+                <a href="settings.html" class="nav-link active"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01-.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg> Settings</a>
+            </nav>
+            <form action="logout.php" method="POST" class="logout-form">
+                <button type="submit" class="logout-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z" clip-rule="evenodd" /></svg> Logout</button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            <header class="header header-red">
+                <h1>System Settings</h1>
+            </header>
+
+            <div id="alertContainer"></div>
+
+            <div class="content-card card-red">
+                <h2>Security Settings</h2>
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="current_password">Current Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="current_password" name="current_password" required>
+                            <span class="toggle-password" onclick="togglePassword('current_password')"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="new_password" name="new_password" required onkeyup="checkPasswordStrength(this.value); checkPasswordMatch();">
+                            <span class="toggle-password" onclick="togglePassword('new_password')"></span>
+                        </div>
+                        <div class="strength-meter">
+                            <div id="strengthBar" class="strength-bar"></div>
+                        </div>
+                        <span id="strengthText" class="strength-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm_password" name="confirm_password" required onkeyup="checkPasswordMatch()">
+                            <span class="toggle-password" onclick="togglePassword('confirm_password')"></span>
+                        </div>
+                        <span id="matchText" class="match-text"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="content-card card-red">
+                <h2>System Actions</h2>
+                <div id="systemActionsAlertContainer"></div>
+                <p>Perform system-wide actions. Please use with caution.</p>
+                <div class="form-actions">
+                    <button id="clearLogsBtn" class="btn btn-danger">Clear Activity Logs</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeLogoutModal">&times;</span>
+            <h2>Confirm Logout</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="modal-actions">
+                <button id="confirmLogoutBtn" class="btn btn-danger">Yes, Logout</button>
+                <button id="cancelLogoutBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="settings-script.js"></script>
+    <script src="logout-modal-script.js?v=1.0"></script>
+</body>
+</html>

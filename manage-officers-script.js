@@ -62,7 +62,9 @@ function loadOfficers() {
                     // Determine button properties
                     const toggleBtnText = isActive ? 'Deactivate' : 'Activate';
                     const toggleBtnClass = isActive ? 'btn-warning' : 'btn-success';
-                    const toggleBtnIcon = isActive ? '⏸️' : '▶️';
+                    const deactivateIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor" style="vertical-align: middle;"><path d="M791-55 686-160H160v-112q0-34 17.5-62.5T224-378q45-23 91.5-37t94.5-21L55-791l57-57 736 736-57 57ZM240-240h366L486-360h-6q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm496-138q29 14 46 42.5t18 61.5L666-408q18 7 35.5 14t34.5 16ZM568-506l-59-59q23-9 37-29.5t14-45.5q0-33-23.5-56.5T480-720q-25 0-45.5 14T405-669l-59-59q23-34 58-53t76-19q66 0 113 47t47 113q0 41-19 76t-53 58Zm38 266H240h366ZM457-617Z"/></svg>`;
+                    const activateIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor" style="vertical-align: middle;"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q62 0 126 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/></svg>`;
+                    const toggleBtnIcon = isActive ? deactivateIcon : activateIcon;
                     const currentStatusForToggle = isActive ? 'active' : 'inactive';
 
                     row.innerHTML = `
@@ -76,7 +78,7 @@ function loadOfficers() {
                                 <button class="btn btn-small ${toggleBtnClass}" onclick="toggleOfficerStatus(${officer.id}, '${currentStatusForToggle}')" title="${toggleBtnText}">
                                     ${toggleBtnIcon}
                                 </button>
-                                <button class="btn-icon" onclick="deleteOfficer(${officer.id})" style="color:red;" title="Delete">🗑️</button>
+                                <button class="btn-icon btn-icon-danger" onclick="deleteOfficer(${officer.id})" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg></button>
                             </div>
                         </td>
                     `;
